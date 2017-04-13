@@ -175,6 +175,9 @@ thread_create (const char *name, int priority,
 
   ASSERT (function != NULL);
 
+  /* Initialize the bolcked time of a thread. */
+  t->ticks_blocked = 0;
+
   /* Allocate thread. */
   t = palloc_get_page (PAL_ZERO);
   if (t == NULL)
@@ -248,6 +251,20 @@ thread_unblock (struct thread *t)
   list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
   intr_set_level (old_level);
+}
+
+/* Check the blocked thread */
+void
+blocked_thread_check (struct thread *t, void *aux UNUSED)
+{
+  if (t->status == THREAD_BLOCKED && t->ticks_blocked > 0)
+  {
+      t->ticks_blocked--;
+      if (t->ticks_blocked == 0)
+      {
+          thread_unblock(t);
+      }
+  }
 }
 
 /* Returns the name of the running thread. */
