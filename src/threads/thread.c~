@@ -184,9 +184,6 @@ thread_create (const char *name, int priority,
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
 
-  /* Initialize the bolcked time of a thread. */
-  t->ticks_blocked = 0;
-
   /* Prepare thread for first run by initializing its stack.
      Do this atomically so intermediate values for the 'stack' 
      member cannot be observed. */
@@ -209,14 +206,12 @@ thread_create (const char *name, int priority,
 
   intr_set_level (old_level);
 
-
+  /* Initialize the bolcked time of a thread. */
+  t->ticks_blocked = 0;
 
   /* Add to run queue. */
   thread_unblock (t);
 
-  if(thread_current()->priority < priority)
-    thread_yield();
-    
   return tid;
 }
 
@@ -366,7 +361,6 @@ void
 thread_set_priority (int new_priority) 
 {
   thread_current ()->priority = new_priority;
-  thread_yield();
 }
 
 /* Returns the current thread's priority. */
@@ -615,4 +609,3 @@ thread_cmp_priority (const struct list_elem *a, const struct list_elem *b, void 
 {
   return list_entry(a, struct thread, elem)->priority > list_entry(b, struct thread, elem)->priority;
 }
-/**/
