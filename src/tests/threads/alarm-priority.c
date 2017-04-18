@@ -33,7 +33,7 @@ test_alarm_priority (void)
     }
 
   thread_set_priority (PRI_MIN);
-
+  //test 
   for (i = 0; i < 10; i++)
     sema_down (&wait_sema);
 }
