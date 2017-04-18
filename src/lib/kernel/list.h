@@ -106,7 +106,11 @@ struct list
    of the list element.  See the big comment at the top of the
    file for an example. */
 #define list_entry(LIST_ELEM, STRUCT, MEMBER)           \
+<<<<<<< HEAD
         ((STRUCT *) ((uint8_t *) &(LIST_ELEM)->next    \
+=======
+        ((STRUCT *) ((uint8_t *) &(LIST_ELEM)->next     \
+>>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
                      - offsetof (STRUCT, MEMBER.next)))
 
 /* List initialization.
