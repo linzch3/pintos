@@ -209,20 +209,12 @@ thread_create (const char *name, int priority,
 
   intr_set_level (old_level);
 
-<<<<<<< HEAD
-
-
   /* Add to run queue. */
   thread_unblock (t);
 
   if(thread_current()->priority < priority)
     thread_yield();
-    
-=======
-  /* Add to run queue. */
-  thread_unblock (t);
 
->>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
   return tid;
 }
 
@@ -372,10 +364,7 @@ void
 thread_set_priority (int new_priority) 
 {
   thread_current ()->priority = new_priority;
-<<<<<<< HEAD
   thread_yield();
-=======
->>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
 }
 
 /* Returns the current thread's priority. */
@@ -415,11 +404,7 @@ thread_get_recent_cpu (void)
   /* Not yet implemented. */
   return 0;
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
 /* Idle thread.  Executes when no other thread is ready to run.
 
    The idle thread is initially put on the ready list by
@@ -468,11 +453,7 @@ kernel_thread (thread_func *function, void *aux)
   function (aux);       /* Execute the thread function. */
   thread_exit ();       /* If function() returns, kill the thread. */
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
 /* Returns the running thread. */
 struct thread *
 running_thread (void) 
@@ -621,11 +602,7 @@ allocate_tid (void)
 
   return tid;
 }
-<<<<<<< HEAD
 
-=======
-
->>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
@@ -635,9 +612,5 @@ bool
 thread_cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
 {
   return list_entry(a, struct thread, elem)->priority > list_entry(b, struct thread, elem)->priority;
-<<<<<<< HEAD
 }
-/**/
-=======
-}
->>>>>>> d6a5d455b01436e14625096e40f458fba6b353e8
+
