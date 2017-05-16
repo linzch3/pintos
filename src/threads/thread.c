@@ -363,7 +363,17 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
-  thread_current ()->priority = new_priority;
+  struct thread *current_thread = thread_current ();
+  current_thread->old_priority = new_priority;
+
+  if(current_thread->donated == false)
+    current_thread->priority = new_priority;
+  else if(new_priority > current_thread->priority)
+  {
+    current_thread->donated = false;
+    current_thread->priority = new_priority;
+  }
+
   if (!list_empty (&ready_list))
   {
     if(list_entry (list_max (&ready_list,(list_less_func *) &thread_cmp_priority, NULL),
@@ -495,6 +505,12 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
+
+  t->old_priority = priority;
+  t->donated = false;
+  list_init(&t->locks_holds);
+  t->lock_blocked = NULL;
+
   list_insert_ordered (&all_list, &t->allelem, (list_less_func *) &thread_cmp_priority, NULL);
 }
 
@@ -619,3 +635,8 @@ thread_cmp_priority (const struct list_elem *a, const struct list_elem *b, void 
   return list_entry(a, struct thread, elem)->priority > list_entry(b, struct thread, elem)->priority;
 }
 
+void
+sort_ready_list(void)
+{
+  list_sort(&ready_list, (list_less_func *) &thread_cmp_priority, NULL);
+}

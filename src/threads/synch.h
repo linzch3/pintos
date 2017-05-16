@@ -3,7 +3,7 @@
 
 #include <list.h>
 #include <stdbool.h>
-
+#include <debug.h>
 /* A counting semaphore. */
 struct semaphore 
   {
@@ -22,6 +22,9 @@ struct lock
   {
     struct thread *holder;      /* Thread holding lock (for debugging). */
     struct semaphore semaphore; /* Binary semaphore controlling access. */
+
+    struct list_elem elem; /*list element for sort*/
+    int priority;
   };
 
 void lock_init (struct lock *);
@@ -49,3 +52,6 @@ void cond_broadcast (struct condition *, struct lock *);
 #define barrier() asm volatile ("" : : : "memory")
 
 #endif /* threads/synch.h */
+
+bool lock_cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED);
+
